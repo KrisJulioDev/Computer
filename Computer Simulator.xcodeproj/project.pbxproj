@@ -13,6 +13,7 @@
 		35128F0C1F636C4000908D4C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 35128F0B1F636C4000908D4C /* Assets.xcassets */; };
 		35128F0F1F636C4000908D4C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35128F0D1F636C4000908D4C /* LaunchScreen.storyboard */; };
 		35128F1A1F636C4000908D4C /* Computer_SimulatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35128F191F636C4000908D4C /* Computer_SimulatorTests.swift */; };
+		35B45FF21F63724F00302C44 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B45FF11F63724F00302C44 /* Constants.swift */; };
 		35C1796C1F636DAC00CA32E3 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C1796B1F636DAC00CA32E3 /* Stack.swift */; };
 		35C1796E1F636DEB00CA32E3 /* Computer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C1796D1F636DEB00CA32E3 /* Computer.swift */; };
 		87E80E9729B5FC7D38D727EE /* Pods_Computer_Simulator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1560D51A6F7ABAD7522A735 /* Pods_Computer_Simulator.framework */; };
@@ -40,6 +41,7 @@
 		35128F151F636C4000908D4C /* Computer SimulatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Computer SimulatorTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		35128F191F636C4000908D4C /* Computer_SimulatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Computer_SimulatorTests.swift; sourceTree = "<group>"; };
 		35128F1B1F636C4000908D4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		35B45FF11F63724F00302C44 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		35C1796B1F636DAC00CA32E3 /* Stack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		35C1796D1F636DEB00CA32E3 /* Computer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Computer.swift; sourceTree = "<group>"; };
 		62EBB7164854471246017A40 /* Pods_Computer_SimulatorTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Computer_SimulatorTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -100,6 +102,7 @@
 				35128F0B1F636C4000908D4C /* Assets.xcassets */,
 				35128F0D1F636C4000908D4C /* LaunchScreen.storyboard */,
 				35128F101F636C4000908D4C /* Info.plist */,
+				35B45FF11F63724F00302C44 /* Constants.swift */,
 			);
 			path = "Computer Simulator";
 			sourceTree = "<group>";
@@ -346,6 +349,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35B45FF21F63724F00302C44 /* Constants.swift in Sources */,
 				35C1796E1F636DEB00CA32E3 /* Computer.swift in Sources */,
 				35128F071F636C4000908D4C /* ViewController.swift in Sources */,
 				35C1796C1F636DAC00CA32E3 /* Stack.swift in Sources */,

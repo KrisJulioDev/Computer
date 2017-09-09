@@ -8,12 +8,137 @@
 
 import UIKit
 
+// TODO: More error could possibly found in this program that needs to handle.
 enum InstructionError: Error {
-    case NilValueFound
-    case NotANumber(Any?)
-    case EmptyInstructions
+    case NilValueFound(Int)
+    case NotANumber(Int)
+    case EmptyInstructions(Int)
+    case NotAValidInstruction(Int)
+}
+
+// TODO: This can be simplified in some way
+// all errors have a parameter pointer. Just to know where the address currently is when error happens.
+extension InstructionError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        
+        case .NilValueFound(let ptr):
+            return "Nil value found. Exiting program at address \(ptr)...."
+        case .NotANumber(let ptr):
+            return "Expecting a number. Exiting program at address \(ptr)...."
+        case .EmptyInstructions(let ptr):
+            return "Instruction not found. Exiting program at address \(ptr)...."
+        case .NotAValidInstruction(let ptr):
+            return "Not a valid instruction. Exiting program at address \(ptr)...."
+        }
+    }
 }
 
 class Computer {
     
+    // swift dont have stack collection type, create our own.
+    var memory = Stack()
+    
+    var addressCount: Int
+    
+    // execution always starts at address 0
+    var currentMemoryAddress = 0
+    
+    // initialize the addresses only when needed and to make sure addressCount has value.
+    lazy var addresses: [String?] = {
+        return [String?](repeating: nil, count: self.addressCount)
+    }()
+    
+    
+    init(numberOfAddresses: Int = 100) {
+        addressCount = numberOfAddresses
+    }
+    
+    // function for adding computer instructions
+    // params: command -> Instructions like PUSH, PRINT, CALL, STOP etc.
+    // params: address -> memory address of instruction
+    func push(_ command: String?, _ address: inout Int) {
+        addresses[address] = command
+        address += 1
+    }
+    
+    //FIXME: Command instructions are case sensitive, should support small caps or combination
+    func execute() throws {
+        
+        while true {
+            
+            // command starts
+            let command = addresses[currentMemoryAddress]
+            
+            guard command != nil else { throw InstructionError.EmptyInstructions(currentMemoryAddress) }
+            
+            // Note that command is acceptable as long as it has prefix of the given condition
+            // for example "MULT" and "MULTIPLY" will work
+            if (command?.hasPrefix("PUSH"))! {
+                try push(command: command!)
+            } else if (command?.hasPrefix("PRINT"))! {
+                print()
+            } else if (command?.hasPrefix("MULT"))! {
+                try multiply(command: command!)
+            } else if (command?.hasPrefix("RET"))! {
+                try returnToAddress()
+            } else if (command?.hasPrefix("CALL"))! {
+                try call(command: command!)
+            } else if (command?.hasPrefix("STOP"))! {
+                break
+            } else {
+                throw InstructionError.NotAValidInstruction(currentMemoryAddress)
+            }
+        }
+    }
+    
+    private func incrementAddress(by value: Int = 1) {
+        currentMemoryAddress += value
+    }
+    
+    private func push(command: String) throws {
+        // split string to 2. and get the last one then convert to Int.
+        let value = command.components(separatedBy: " ").last.map({ Int($0) })
+        
+        guard value != nil else { throw InstructionError.NilValueFound(currentMemoryAddress) }
+        guard value is Int else { throw InstructionError.NotANumber(currentMemoryAddress) }
+        
+        memory.push(value!!)
+        incrementAddress()
+        
+    }
+    
+    private func print() {
+        let value = memory.pop()
+        debugPrint(value ?? "")
+        incrementAddress()
+    }
+    
+    private func call(command: String) throws {
+        let  value = command.components(separatedBy: " ").last.map({ Int($0)})
+        
+        guard value != nil else { throw InstructionError.NilValueFound(currentMemoryAddress) }
+        guard value is Int else { throw InstructionError.NotANumber(currentMemoryAddress) }
+        
+        currentMemoryAddress = value!!
+    }
+    
+    private func multiply(command: String) throws {
+        let firstOperand = memory.pop()
+        let secondOperand = memory.pop()
+        
+        guard firstOperand != nil else { throw InstructionError.NilValueFound(currentMemoryAddress) }
+        guard secondOperand != nil else { throw InstructionError.NilValueFound(currentMemoryAddress) }
+        
+        let product = firstOperand! * secondOperand!
+        memory.push(product)
+        incrementAddress()
+    }
+    
+    private func returnToAddress() throws {
+        let value = memory.pop()
+        
+        guard value != nil else { throw InstructionError.NilValueFound(currentMemoryAddress) }
+        currentMemoryAddress = value!
+    }
 }
