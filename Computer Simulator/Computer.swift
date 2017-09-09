@@ -8,6 +8,7 @@
 
 import UIKit
 
+// TODO: More error could possibly found in this program that needs to handle.
 enum InstructionError: Error {
     case NilValueFound(Int)
     case NotANumber(Int)
@@ -15,6 +16,8 @@ enum InstructionError: Error {
     case NotAValidInstruction(Int)
 }
 
+// TODO: This can be simplified in some way
+// all errors have a parameter pointer. Just to know where the address currently is when error happens.
 extension InstructionError: LocalizedError {
     public var errorDescription: String? {
         switch self {
@@ -41,7 +44,7 @@ class Computer {
     // execution always starts at address 0
     var currentMemoryAddress = 0
     
-    // initialize the addresses only when needed and to assure addressCount has value.
+    // initialize the addresses only when needed and to make sure addressCount has value.
     lazy var addresses: [String?] = {
         return [String?](repeating: nil, count: self.addressCount)
     }()
@@ -59,7 +62,7 @@ class Computer {
         address += 1
     }
     
-    //TODO: Command instructions are case sensitive, only supports all caps
+    //FIXME: Command instructions are case sensitive, should support small caps or combination
     func execute() throws {
         
         while true {
@@ -69,6 +72,8 @@ class Computer {
             
             guard command != nil else { throw InstructionError.EmptyInstructions(currentMemoryAddress) }
             
+            // Note that command is acceptable as long as it has prefix of the given condition
+            // for example "MULT" and "MULTIPLY" will work
             if (command?.hasPrefix("PUSH"))! {
                 try push(command: command!)
             } else if (command?.hasPrefix("PRINT"))! {
@@ -80,7 +85,6 @@ class Computer {
             } else if (command?.hasPrefix("CALL"))! {
                 try call(command: command!)
             } else if (command?.hasPrefix("STOP"))! {
-                debugPrint("Execution completed...")
                 break
             } else {
                 throw InstructionError.NotAValidInstruction(currentMemoryAddress)
@@ -93,6 +97,7 @@ class Computer {
     }
     
     private func push(command: String) throws {
+        // split string to 2. and get the last one then convert to Int.
         let value = command.components(separatedBy: " ").last.map({ Int($0) })
         
         guard value != nil else { throw InstructionError.NilValueFound(currentMemoryAddress) }

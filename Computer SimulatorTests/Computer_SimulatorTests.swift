@@ -7,30 +7,69 @@
 //
 
 import XCTest
+import RxSwift
 @testable import Computer_Simulator
 
 class Computer_SimulatorTests: XCTestCase {
     
+    let disposeBag = DisposeBag()
+    let computer = Computer(numberOfAddresses: 100)
+    var pointer = PRINT_TENTEN_BEGIN
+    var instructions = [""]
+    
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        
+        // reset values
+        pointer = PRINT_TENTEN_BEGIN
+        instructions = [""]
+        
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testNormalExecution() {
+        instructions = ["MULT", "PRINT", "RET", "PUSH 1009", "PRINT", "PUSH 6", "PUSH 101", "PUSH 10", "CALL 50", "STOP"]
+        self.executeTest()
     }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    func testInvalidInstruction() {
+        instructions = ["Mil", "PRINT", "RET", "PUSH 1009", "PRINT", "PUSH 6", "PUSH 101", "PUSH 10", "CALL 50", "STOP"]
+        self.executeTest()
     }
     
+    func testMissingInstruction() {
+        instructions = ["Mil", "PRINT", "RET", "PUSH 1009", "PRINT", "PUSH 6", "PUSH 101", "PUSH 10", "CALL 50"]
+        self.executeTest()
+    }
+    
+    func testNotANumber() {
+        instructions = ["MULT", "PRINT", "RET", "PUSH 1oo9", "PRINT", "PUSH 6", "PUSH 101", "PUSH 10", "CALL 50", "STOP"]
+        self.executeTest()
+    }
+    
+    func executeTest() {
+        Observable
+            .just(instructions)
+            .map({ instructions in
+                for command in instructions {
+                    self.computer.push(command, &self.pointer)
+                    
+                    if command == "RET" { self.pointer = MAIN_BEGIN }
+                }
+            }).flatMap({
+                return Observable.just(try self.computer.execute())
+            }).subscribe(onNext: { value in
+                print("finishing execution...")
+            }, onError: { error in
+                print("execution stopped... error ", error.localizedDescription)
+                //XCTFail(error.localizedDescription)
+            }, onCompleted: {
+                print("execution completed...")
+            }, onDisposed: {
+                print("observable disposed...")
+            }).addDisposableTo(disposeBag)
+    }
 }

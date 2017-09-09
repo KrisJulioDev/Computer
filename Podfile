@@ -3,14 +3,15 @@
 
 target 'Computer Simulator' do 
   use_frameworks!
-  pod 'RxSwift',    '3.0.0-rc.1'
-  pod 'RxCocoa',    '3.0.0-rc.1'
+  pod 'RxSwift',    '3.0.0-rc.1' 
 
   # Pods for Computer Simulator
 
   target 'Computer SimulatorTests' do
     inherit! :search_paths
     # Pods for testing
+
+  pod 'RxSwift',    '3.0.0-rc.1' 
   end
 
 end
