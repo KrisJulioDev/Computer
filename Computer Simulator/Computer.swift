@@ -80,7 +80,6 @@ class Computer {
             } else if (command?.hasPrefix("CALL"))! {
                 try call(command: command!)
             } else if (command?.hasPrefix("STOP"))! {
-                debugPrint("Execution completed...")
                 break
             } else {
                 throw InstructionError.NotAValidInstruction(currentMemoryAddress)
