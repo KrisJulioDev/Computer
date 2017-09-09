@@ -8,6 +8,14 @@
 
 import UIKit
 
-class Stack {
+class Stack { 
+    var stackArray = [Int]()
     
+    func push(_ element: Int) {
+        stackArray.append(element)
+    }
+    
+    func pop() -> Int? {
+        return stackArray.popLast()
+    }
 }
