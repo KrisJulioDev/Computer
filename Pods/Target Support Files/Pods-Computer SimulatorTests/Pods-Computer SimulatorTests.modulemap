@@ -1,0 +1,6 @@
+framework module Pods_Computer_SimulatorTests {
+  umbrella header "Pods-Computer SimulatorTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
