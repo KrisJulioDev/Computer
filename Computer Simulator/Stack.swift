@@ -8,6 +8,7 @@
 
 import UIKit
 
+// Basic implementation of stack
 class Stack { 
     var stackArray = [Int]()
     
